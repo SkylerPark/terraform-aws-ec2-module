@@ -172,7 +172,6 @@ resource "aws_volume_attachment" "this" {
 ###################################################
 # EC2 Instance State
 ###################################################
-
 resource "aws_ec2_instance_state" "this" {
   instance_id = !var.spot_enabled ? aws_instance.this[0].id : aws_spot_instance_request.this[0].id
   state       = var.state == "RUNNING" ? "running" : "stopped"
