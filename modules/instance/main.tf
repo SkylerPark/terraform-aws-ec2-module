@@ -12,11 +12,14 @@ data "aws_ssm_parameter" "this" {
 # Instance
 ################################################################################
 resource "aws_instance" "this" {
-  count                = !var.spot_enabled ? 1 : 0
-  instance_type        = var.type
-  ami                  = local.ami
-  key_name             = var.key_name
-  iam_instance_profile = var.iam_instance_profile
+  count         = !var.spot_enabled ? 1 : 0
+  instance_type = var.instance_type
+  ami           = local.ami
+  key_name      = var.key_name
+  # iam_instance_profile = (try(var.instance_profile.enabled, true)
+  #   ? module.instance_profile[0].name
+  #   : var.custom_instance_profile
+  # )
 
   # CPU
   cpu_core_count       = try(var.cpu_options.core_count, null)
@@ -77,11 +80,14 @@ resource "aws_instance" "this" {
 # SPOT Instance
 ################################################################################
 resource "aws_spot_instance_request" "this" {
-  count                = var.spot_enabled ? 1 : 0
-  instance_type        = var.type
-  ami                  = local.ami
-  key_name             = var.key_name
-  iam_instance_profile = var.iam_instance_profile
+  count         = var.spot_enabled ? 1 : 0
+  instance_type = var.instance_type
+  ami           = local.ami
+  key_name      = var.key_name
+  # iam_instance_profile = (try(var.instance_profile.enabled, false)
+  #   ? module.instance_profile[0].name
+  #   : var.custom_instance_profile
+  # )
 
   # CPU
   cpu_core_count       = try(var.cpu_options.core_count, null)
@@ -139,7 +145,7 @@ resource "aws_spot_instance_request" "this" {
 }
 
 ################################################################################
-# EBS
+# EBS Storage
 ################################################################################
 resource "aws_ebs_volume" "this" {
   for_each          = var.ebs_block_device
@@ -162,11 +168,10 @@ resource "aws_ebs_volume" "this" {
 
 resource "aws_volume_attachment" "this" {
   for_each    = var.ebs_block_device
-  device_name = each.key
+  device_name = each.value.device_name
   instance_id = !var.spot_enabled ? aws_instance.this[0].id : aws_spot_instance_request.this[0].id
   volume_id   = aws_ebs_volume.this[each.key].id
 }
-
 
 
 ###################################################
@@ -185,7 +190,7 @@ resource "aws_ami_from_instance" "this" {
   for_each = var.ami_snapshots
 
   name               = each.key
-  description        = "Managed by Terraform."
+  description        = var.ami_description
   source_instance_id = !var.spot_enabled ? aws_instance.this[0].id : aws_spot_instance_request.this[0].id
 
   snapshot_without_reboot = var.ami_snapshots_without_reboot_enabled
@@ -194,7 +199,7 @@ resource "aws_ami_from_instance" "this" {
     {
       "Name" = each.key
     },
-    local.module_tags,
+    var.ami_tags,
     var.tags,
   )
 }

@@ -1,49 +1,35 @@
-variable "tags" {
-  description = "A map of tags to add to all resources"
-  type        = map(string)
-  default     = {}
-}
-
-################################################################################
-# Key Pair
-################################################################################
-
-variable "key_name" {
-  description = "The name for the key pair. Conflicts with `key_name_prefix`"
+variable "name" {
+  description = "(필수) SSH key pair 이름."
   type        = string
-  default     = null
-}
-
-variable "key_name_prefix" {
-  description = "Creates a unique name beginning with the specified prefix. Conflicts with `key_name`"
-  type        = string
-  default     = null
+  nullable    = false
 }
 
 variable "public_key" {
-  description = "The public key material"
+  description = "(선택) 공개키 내용."
   type        = string
-  default     = null
+  default     = ""
 }
 
-################################################################################
-# Private Key
-################################################################################
-
 variable "create_private_key" {
-  description = "Determines whether a private key will be created"
+  description = "(선택) private key 생성 여부."
   type        = bool
   default     = false
 }
 
 variable "private_key_algorithm" {
-  description = "Name of the algorithm to use when generating the private key. Currently-supported values are `RSA` and `ED25519`"
+  description = "(선택) private key 생성시 알고리즘. 지원하는 값 `RSA` and `ED25519` default: `RSA`"
   type        = string
   default     = "RSA"
 }
 
 variable "private_key_rsa_bits" {
-  description = "When algorithm is `RSA`, the size of the generated RSA key, in bits (default: `4096`)"
+  description = "(선택) 알고리즘이 `RSA` 일때, RSA key bits 사이즈 default: `4096`"
   type        = number
   default     = 4096
+}
+
+variable "tags" {
+  description = "(선택) 리소스 태그 내용"
+  type        = map(string)
+  default     = {}
 }
