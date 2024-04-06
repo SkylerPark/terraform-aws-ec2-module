@@ -6,8 +6,8 @@ repos:
       # - id: terraform_tfsec
       - id: terraform_docs
         args:
-          - "--args=--config=.terraform-docs.yml"
           - "--args=--lockfile=false"
+          - --hook-config=--add-to-existing-file=true
           - --hook-config=--create-file-if-not-exist=true
       - id: terraform_tflint
         exclude: "examples/.*"
