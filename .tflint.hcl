@@ -26,10 +26,6 @@ rule "terraform_naming_convention" {
     }
   }
 
-  rule "terraform_required_version" {
-    enabled = true
-  }
-
   module {
     format = "extended_snake_case"
   }
