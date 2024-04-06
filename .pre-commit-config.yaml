@@ -6,9 +6,11 @@ repos:
       # - id: terraform_tfsec
       - id: terraform_docs
         args:
+          - "--args=--config=.terraform-docs.yml"
           - "--args=--lockfile=false"
+          - --hook-config=--create-file-if-not-exist=true
       - id: terraform_tflint
-        exclude: 'examples/.*'
+        exclude: "examples/.*"
         args:
           - "--args=--config=__GIT_WORKING_DIR__/.tflint.hcl"
       - id: terraform_validate
