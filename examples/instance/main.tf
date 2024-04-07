@@ -25,7 +25,7 @@ data "aws_ami" "amazon_linux2" {
 
 module "single_instance" {
   source        = "../../modules/instance"
-  name          = "${local.service_code}-${local.identity_code}-${local.environment_code}-01"
+  name          = "${local.service_code}-${local.identity_code}-${local.environment_code}-02"
   instance_type = "t2.micro"
   ami           = data.aws_ami.amazon_linux2.id
 }
