@@ -6,10 +6,8 @@ preset: "angular"
 tagFormat: "${version}"
 plugins:
   - "@semantic-release/commit-analyzer"
-  - "@semantic-release/release-notes-generator"
   - "@semantic-release/changelog"
   - "@semantic-release/github"
-  - "@semantic-release/exec"
 
 verifyConditions:
   - "@semantic-release/github"
@@ -60,8 +58,6 @@ generateNotes:
       - type: "test"
       - hidden: true
     presetConfig: true
-  - path: "@semantic-release/exec"
-    cmd: "echo ${nextRelease.version} > nextRelease"
 prepare:
   - path: "@semantic-release/changelog"
     changelogFile: "docs/CHANGELOG.md"
