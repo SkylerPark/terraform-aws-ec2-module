@@ -1,7 +1,7 @@
 ---
 branches:
-  - prod
-defaultBranch: "prod"
+  - main
+defaultBranch: "main"
 preset: "angular"
 tagFormat: "${version}"
 plugins:
