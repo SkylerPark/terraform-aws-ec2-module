@@ -60,7 +60,7 @@ generateNotes:
     presetConfig: true
 prepare:
   - path: "@semantic-release/changelog"
-    changelogFile: "docs/CHANGELOG.md"
+    changelogFile: "CHANGELOG.md"
 publish:
   - path: "@semantic-release/github"
 
