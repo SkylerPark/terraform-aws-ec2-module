@@ -70,7 +70,7 @@ resource "aws_instance" "this" {
       volume_size           = try(root_block_device.value.volume_size, null)
       volume_type           = try(root_block_device.value.volume_type, null)
       throughput            = try(root_block_device.value.throughput, null)
-      tags                  = try(root_block_device.value.tags, null) == null ? { Name = "${each.key}-os" } : merge({ Name = "${each.key}-os" }, root_block_device.value.tags)
+      tags                  = try(root_block_device.value.tags, null) == null ? merge({ Name = "${var.name}-os" }, var.tags) : merge({ Name = "${var.name}-os" }, root_block_device.value.tags, var.tags)
     }
   }
   tags = merge({ "Name" = var.name }, var.tags, var.instance_tags)
@@ -138,7 +138,7 @@ resource "aws_spot_instance_request" "this" {
       volume_size           = try(root_block_device.value.volume_size, null)
       volume_type           = try(root_block_device.value.volume_type, null)
       throughput            = try(root_block_device.value.throughput, null)
-      tags                  = try(root_block_device.value.tags, null) == null ? { Name = "${each.key}-os" } : merge({ Name = "${each.key}-os" }, root_block_device.value.tags)
+      tags                  = try(root_block_device.value.tags, null) == null ? merge({ Name = "${var.name}-os" }, var.tags) : merge({ Name = "${var.name}-os" }, root_block_device.value.tags, var.tags)
     }
   }
   tags = merge({ "Name" = var.name }, var.tags, var.instance_tags)

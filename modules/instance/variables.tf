@@ -190,7 +190,7 @@ variable "instance_tags" {
 ################################################################################
 variable "ebs_block_device" {
   description = "(선택) 인스턴스 추가 EBS 블록."
-  type        = map(string)
+  type        = any
   default     = {}
 }
 
