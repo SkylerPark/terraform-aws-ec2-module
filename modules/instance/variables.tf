@@ -185,9 +185,21 @@ variable "instance_tags" {
   default     = {}
 }
 
-################################################################################
+variable "volume_tag_enabled" {
+  description = "(선택) 인스턴스 볼륨 태그 활성화 여부."
+  type        = bool
+  default     = true
+}
+
+variable "volume_tags" {
+  description = "(선택) 인스턴스 DISK 태그 내용"
+  type        = map(string)
+  default     = {}
+}
+
+###################################################
 # EBS Storage
-################################################################################
+###################################################
 variable "ebs_block_device" {
   description = "(선택) 인스턴스 추가 EBS 블록."
   type        = any
@@ -225,6 +237,21 @@ variable "ami_snapshots_without_reboot_enabled" {
 
 variable "ami_tags" {
   description = "(선택) AMI 태그 내용"
+  type        = map(string)
+  default     = {}
+}
+
+###################################################
+# ElasticIP
+###################################################
+variable "eip_enabled" {
+  description = "(선택) Instance 에 Elastic IP 할당 여부"
+  type        = bool
+  default     = false
+}
+
+variable "eip_tags" {
+  description = "(선택) ElasticIP 태그 내용"
   type        = map(string)
   default     = {}
 }

@@ -8,9 +8,9 @@ data "aws_ssm_parameter" "this" {
   name  = var.ami_ssm_parameter
 }
 
-################################################################################
-# Instance
-################################################################################
+###################################################
+# EC2 Instance
+###################################################
 resource "aws_instance" "this" {
   count         = !var.spot_enabled ? 1 : 0
   instance_type = var.instance_type
@@ -70,15 +70,16 @@ resource "aws_instance" "this" {
       volume_size           = try(root_block_device.value.volume_size, null)
       volume_type           = try(root_block_device.value.volume_type, null)
       throughput            = try(root_block_device.value.throughput, null)
-      tags                  = try(root_block_device.value.tags, null) == null ? merge({ Name = "${var.name}-os" }, var.tags) : merge({ Name = "${var.name}-os" }, root_block_device.value.tags, var.tags)
+      tags                  = try(root_block_device.value.tags, null)
     }
   }
-  tags = merge({ "Name" = var.name }, var.tags, var.instance_tags)
+  tags        = merge({ "Name" = var.name }, var.tags, var.instance_tags)
+  volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
 }
 
-################################################################################
-# SPOT Instance
-################################################################################
+###################################################
+# EC2 SPOT Instance
+###################################################
 resource "aws_spot_instance_request" "this" {
   count         = var.spot_enabled ? 1 : 0
   instance_type = var.instance_type
@@ -138,15 +139,16 @@ resource "aws_spot_instance_request" "this" {
       volume_size           = try(root_block_device.value.volume_size, null)
       volume_type           = try(root_block_device.value.volume_type, null)
       throughput            = try(root_block_device.value.throughput, null)
-      tags                  = try(root_block_device.value.tags, null) == null ? merge({ Name = "${var.name}-os" }, var.tags) : merge({ Name = "${var.name}-os" }, root_block_device.value.tags, var.tags)
+      tags                  = try(root_block_device.value.tags, null)
     }
   }
-  tags = merge({ "Name" = var.name }, var.tags, var.instance_tags)
+  tags        = merge({ "Name" = var.name }, var.tags, var.instance_tags)
+  volume_tags = var.volume_tag_enabled ? merge({ "Name" = var.name }, var.volume_tags) : null
 }
 
-################################################################################
+###################################################
 # EBS Storage
-################################################################################
+###################################################
 resource "aws_ebs_volume" "this" {
   for_each          = var.ebs_block_device
   availability_zone = var.availability_zone
@@ -201,5 +203,16 @@ resource "aws_ami_from_instance" "this" {
     },
     var.ami_tags,
     var.tags,
+  )
+}
+
+###################################################
+# ElasticIP
+###################################################
+resource "aws_eip" "this" {
+  count    = var.eip_enabled ? 1 : 0
+  instance = !var.spot_enabled ? aws_instance.this[0].id : aws_spot_instance_request.this[0].id
+  tags = merge(
+    { "Name" = var.name }, var.tags, var.eip_tags
   )
 }
