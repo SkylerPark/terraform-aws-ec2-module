@@ -44,5 +44,9 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_id"></a> [id](#output\_id) | key pair ID |
+| <a name="output_name"></a> [name](#output\_name) | key pair name |
+| <a name="output_public_key"></a> [public\_key](#output\_public\_key) | key pair public key |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

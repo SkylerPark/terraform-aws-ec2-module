@@ -18,7 +18,11 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_single_instance"></a> [single\_instance](#module\_single\_instance) | ../../modules/instance | n/a |
+| <a name="module_instance"></a> [instance](#module\_instance) | ../../modules/instance | n/a |
+| <a name="module_public_subnet_group"></a> [public\_subnet\_group](#module\_public\_subnet\_group) | git::https://github.com/SkylerPark/terraform-aws-vpc-module.git//modules/subnet-group/ | tags/1.1.0 |
+| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | git::https://github.com/SkylerPark/terraform-aws-vpc-module.git//modules/security-group/ | tags/1.1.0 |
+| <a name="module_ssh_key"></a> [ssh\_key](#module\_ssh\_key) | ../../modules/key-pair | n/a |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | git::https://github.com/SkylerPark/terraform-aws-vpc-module.git//modules/vpc/ | tags/1.1.0 |
 
 ## Resources
 

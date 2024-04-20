@@ -29,9 +29,11 @@ No modules.
 | [aws_ami_from_instance.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ami_from_instance) | resource |
 | [aws_ebs_volume.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ebs_volume) | resource |
 | [aws_ec2_instance_state.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_instance_state) | resource |
+| [aws_eip.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
 | [aws_instance.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_spot_instance_request.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/spot_instance_request) | resource |
 | [aws_volume_attachment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/volume_attachment) | resource |
+| [aws_ec2_instance_type.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_instance_type) | data source |
 | [aws_ssm_parameter.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 
 ## Inputs
@@ -49,8 +51,10 @@ No modules.
 | <a name="input_cpu_credits"></a> [cpu\_credits](#input\_cpu\_credits) | (선택) CPU credit 옵션, 인스턴스 타입이 T2, T3, T3a 일때 사용 `standard`, `unlimited` T2일경우 기본적으로 `standard` 사용, T3일경우 기본적으로 `unlimited` 를 사용. | `string` | `null` | no |
 | <a name="input_cpu_options"></a> [cpu\_options](#input\_cpu\_options) | (선택) 특정 워크로드 및 비즈니스 요구에 맞게 최적화하기 위한 CPU 옵션 구성 설정. `cpu_options` 블록내용.<br>    (Optional) `core_count` - 인스턴스 코어수.<br>    (Optional) `threads_per_core` - 인스턴스 코어당 CPU 스레드 수. | <pre>object({<br>    core_count       = number<br>    threads_per_core = number<br>  })</pre> | `null` | no |
 | <a name="input_custom_instance_profile"></a> [custom\_instance\_profile](#input\_custom\_instance\_profile) | (선택) 인스턴스 프로파일을 생성하지 않을경우 이름 | `string` | `null` | no |
-| <a name="input_ebs_block_device"></a> [ebs\_block\_device](#input\_ebs\_block\_device) | (선택) 인스턴스 추가 EBS 블록. | `map(string)` | `{}` | no |
+| <a name="input_ebs_block_device"></a> [ebs\_block\_device](#input\_ebs\_block\_device) | (선택) 인스턴스 추가 EBS 블록. | `any` | `{}` | no |
 | <a name="input_ebs_tags"></a> [ebs\_tags](#input\_ebs\_tags) | (선택) EBS 태그 내용 | `map(string)` | `{}` | no |
+| <a name="input_eip_enabled"></a> [eip\_enabled](#input\_eip\_enabled) | (선택) Instance 에 Elastic IP 할당 여부 | `bool` | `false` | no |
+| <a name="input_eip_tags"></a> [eip\_tags](#input\_eip\_tags) | (선택) ElasticIP 태그 내용 | `map(string)` | `{}` | no |
 | <a name="input_instance_profile"></a> [instance\_profile](#input\_instance\_profile) | (선택) 인스턴스 프로파일 설정 `instance_profile` 블록 내용.<br>    (선택) `enabled` - 인스턴스 프로파일 IAM role 생성 여부 default: `false`.<br>    (선택) `name` - IAM role 이름.<br>    (선택) `path` - IAM role Path.<br>    (선택) `description` - IAM Role 설명.<br>    (선택) `assumable_roles` - 역할이 맡을 수 있는 IAM 역할 ARN 목록.<br>    (선택) `policies` - IAM 역할에 연결할 IAM 정책 ARN 목록.<br>    (선택) `inline_policies` - IAM 역할에 연결할 인라인 IAM 정책 맵. (`name` => `policy`). | `any` | `null` | no |
 | <a name="input_instance_tags"></a> [instance\_tags](#input\_instance\_tags) | (선택) 인스턴스 태그 내용 | `map(string)` | `{}` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | (선택) 인스턴스 타입 default: `t3.micro` | `string` | `"t3.micro"` | no |
@@ -70,10 +74,21 @@ No modules.
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | (선택) 인스턴스 Subnet ID. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (선택) 리소스 태그 내용 | `map(string)` | `{}` | no |
 | <a name="input_termination_protection_enabled"></a> [termination\_protection\_enabled](#input\_termination\_protection\_enabled) | (선택) 종료 보호 활성화. | `bool` | `false` | no |
+| <a name="input_volume_tag_enabled"></a> [volume\_tag\_enabled](#input\_volume\_tag\_enabled) | (선택) 인스턴스 볼륨 태그 활성화 여부. | `bool` | `true` | no |
+| <a name="input_volume_tags"></a> [volume\_tags](#input\_volume\_tags) | (선택) 인스턴스 DISK 태그 내용 | `map(string)` | `{}` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_availability_zone"></a> [availability\_zone](#output\_availability\_zone) | 인스턴스 Availability Zone |
+| <a name="output_cpu"></a> [cpu](#output\_cpu) | 인스턴스 CPU |
+| <a name="output_disk"></a> [disk](#output\_disk) | 인스턴스 DISK |
+| <a name="output_id"></a> [id](#output\_id) | 인스턴스 UUID |
+| <a name="output_memory"></a> [memory](#output\_memory) | 인스턴스 Memory (GiB) |
+| <a name="output_private_ip"></a> [private\_ip](#output\_private\_ip) | 인스턴스 Private IP |
+| <a name="output_public_ip"></a> [public\_ip](#output\_public\_ip) | 인스턴스 Public IP |
+| <a name="output_state"></a> [state](#output\_state) | 인스턴스 상태 |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- BEGIN_TF_DOCS -->

@@ -15,7 +15,9 @@ No providers.
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_ssh_key"></a> [ssh\_key](#module\_ssh\_key) | ../../modules/key-pair | n/a |
 
 ## Resources
 

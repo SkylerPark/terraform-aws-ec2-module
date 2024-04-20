@@ -74,7 +74,7 @@ resource "aws_instance" "this" {
     }
   }
   tags        = merge({ "Name" = var.name }, var.tags, var.instance_tags)
-  volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
+  volume_tags = var.volume_tag_enabled ? merge({ "Name" = var.name }, var.volume_tags) : null
 }
 
 ###################################################
