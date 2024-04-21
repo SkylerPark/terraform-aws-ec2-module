@@ -24,6 +24,8 @@
   - instance
   - spot-request
   - key-pair
+  - ebs-volume
+  - elastic-ip
 
 ## Usage
 
