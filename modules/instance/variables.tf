@@ -43,27 +43,6 @@ variable "key_name" {
   default     = null
 }
 
-variable "instance_profile" {
-  description = <<EOF
-  (선택) 인스턴스 프로파일 설정 `instance_profile` 블록 내용.
-    (선택) `enabled` - 인스턴스 프로파일 IAM role 생성 여부 default: `false`.
-    (선택) `name` - IAM role 이름.
-    (선택) `path` - IAM role Path.
-    (선택) `description` - IAM Role 설명.
-    (선택) `assumable_roles` - 역할이 맡을 수 있는 IAM 역할 ARN 목록.
-    (선택) `policies` - IAM 역할에 연결할 IAM 정책 ARN 목록.
-    (선택) `inline_policies` - IAM 역할에 연결할 인라인 IAM 정책 맵. (`name` => `policy`).
-  EOF
-  type        = any
-  default     = null
-}
-
-variable "custom_instance_profile" {
-  description = "(선택) 인스턴스 프로파일을 생성하지 않을경우 이름"
-  type        = string
-  default     = null
-}
-
 variable "cpu_options" {
   description = <<EOF
   (선택) 특정 워크로드 및 비즈니스 요구에 맞게 최적화하기 위한 CPU 옵션 구성 설정. `cpu_options` 블록내용.
@@ -171,6 +150,12 @@ variable "ami_ssm_parameter" {
   description = "(선택) AMI ID 에 SSM 파라미터 이름 변수참조 (https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-public-parameters-ami.html)"
   type        = string
   default     = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64"
+}
+
+variable "instance_profile" {
+  description = "(선택) 인스턴스 IAM Profile 설정 값."
+  type        = string
+  default     = null
 }
 
 variable "tags" {

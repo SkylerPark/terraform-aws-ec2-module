@@ -12,16 +12,13 @@ data "aws_ssm_parameter" "this" {
 # EC2 Instance
 ###################################################
 resource "aws_instance" "this" {
-  count         = !var.spot_enabled ? 1 : 0
-  instance_type = var.instance_type
-  ami           = local.ami
-  key_name      = var.key_name
-  # iam_instance_profile = (try(var.instance_profile.enabled, true)
-  #   ? module.instance_profile[0].name
-  #   : var.custom_instance_profile
-  # )
+  count                = !var.spot_enabled ? 1 : 0
+  instance_type        = var.instance_type
+  ami                  = local.ami
+  key_name             = var.key_name
+  iam_instance_profile = var.instance_profile
 
-  # CPU
+  ## CPU
   cpu_core_count       = try(var.cpu_options.core_count, null)
   cpu_threads_per_core = try(var.cpu_options.threads_per_core, null)
 
@@ -29,14 +26,14 @@ resource "aws_instance" "this" {
     cpu_credits = local.is_t_instance_type ? var.cpu_credits : null
   }
 
-  # Attributes
+  ## Attributes
   instance_initiated_shutdown_behavior = try(lower(var.shutdown_behavior), null)
   hibernation                          = var.stop_hibernation_enabled
   disable_api_stop                     = var.stop_protection_enabled
   disable_api_termination              = var.termination_protection_enabled
   monitoring                           = var.monitoring_enabled
 
-  # Network
+  ## Network
   availability_zone      = var.availability_zone
   subnet_id              = var.subnet_id
   vpc_security_group_ids = var.security_groups
@@ -45,7 +42,7 @@ resource "aws_instance" "this" {
   private_ip                  = var.private_ip
   secondary_private_ips       = var.secondary_private_ips
 
-  # Metadata
+  ## Metadata
   dynamic "metadata_options" {
     for_each = var.metadata_options != null ? [var.metadata_options] : []
     iterator = metadata
@@ -58,7 +55,7 @@ resource "aws_instance" "this" {
     }
   }
 
-  # Storage
+  ## Storage
   dynamic "root_block_device" {
     for_each = var.root_block_device
 
@@ -73,6 +70,7 @@ resource "aws_instance" "this" {
       tags                  = try(root_block_device.value.tags, null)
     }
   }
+
   tags        = merge({ "Name" = var.name }, var.tags, var.instance_tags)
   volume_tags = var.volume_tag_enabled ? merge({ "Name" = var.name }, var.volume_tags) : null
 }
@@ -81,16 +79,13 @@ resource "aws_instance" "this" {
 # EC2 SPOT Instance
 ###################################################
 resource "aws_spot_instance_request" "this" {
-  count         = var.spot_enabled ? 1 : 0
-  instance_type = var.instance_type
-  ami           = local.ami
-  key_name      = var.key_name
-  # iam_instance_profile = (try(var.instance_profile.enabled, false)
-  #   ? module.instance_profile[0].name
-  #   : var.custom_instance_profile
-  # )
+  count                = var.spot_enabled ? 1 : 0
+  instance_type        = var.instance_type
+  ami                  = local.ami
+  key_name             = var.key_name
+  iam_instance_profile = var.instance_profile
 
-  # CPU
+  ## CPU
   cpu_core_count       = try(var.cpu_options.core_count, null)
   cpu_threads_per_core = try(var.cpu_options.threads_per_core, null)
 
@@ -98,14 +93,14 @@ resource "aws_spot_instance_request" "this" {
     cpu_credits = local.is_t_instance_type ? var.cpu_credits : null
   }
 
-  # Attributes
+  ## Attributes
   instance_initiated_shutdown_behavior = try(lower(var.shutdown_behavior), null)
   hibernation                          = var.stop_hibernation_enabled
   disable_api_stop                     = var.stop_protection_enabled
   disable_api_termination              = var.termination_protection_enabled
   monitoring                           = var.monitoring_enabled
 
-  # Network
+  ## Network
   availability_zone      = var.availability_zone
   subnet_id              = var.subnet_id
   vpc_security_group_ids = var.security_groups
@@ -114,7 +109,7 @@ resource "aws_spot_instance_request" "this" {
   private_ip                  = var.private_ip
   secondary_private_ips       = var.secondary_private_ips
 
-  # Metadata
+  ## Metadata
   dynamic "metadata_options" {
     for_each = var.metadata_options != null ? [var.metadata_options] : []
     iterator = metadata
@@ -127,7 +122,7 @@ resource "aws_spot_instance_request" "this" {
     }
   }
 
-  # Storage
+  ## Storage
   dynamic "root_block_device" {
     for_each = var.root_block_device
 
@@ -142,6 +137,7 @@ resource "aws_spot_instance_request" "this" {
       tags                  = try(root_block_device.value.tags, null)
     }
   }
+
   tags        = merge({ "Name" = var.name }, var.tags, var.instance_tags)
   volume_tags = var.volume_tag_enabled ? merge({ "Name" = var.name }, var.volume_tags) : null
 }

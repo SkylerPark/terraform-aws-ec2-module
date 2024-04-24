@@ -50,12 +50,11 @@ No modules.
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | (선택) 인스턴스를 시작할 AZ. | `string` | `null` | no |
 | <a name="input_cpu_credits"></a> [cpu\_credits](#input\_cpu\_credits) | (선택) CPU credit 옵션, 인스턴스 타입이 T2, T3, T3a 일때 사용 `standard`, `unlimited` T2일경우 기본적으로 `standard` 사용, T3일경우 기본적으로 `unlimited` 를 사용. | `string` | `null` | no |
 | <a name="input_cpu_options"></a> [cpu\_options](#input\_cpu\_options) | (선택) 특정 워크로드 및 비즈니스 요구에 맞게 최적화하기 위한 CPU 옵션 구성 설정. `cpu_options` 블록내용.<br>    (Optional) `core_count` - 인스턴스 코어수.<br>    (Optional) `threads_per_core` - 인스턴스 코어당 CPU 스레드 수. | <pre>object({<br>    core_count       = number<br>    threads_per_core = number<br>  })</pre> | `null` | no |
-| <a name="input_custom_instance_profile"></a> [custom\_instance\_profile](#input\_custom\_instance\_profile) | (선택) 인스턴스 프로파일을 생성하지 않을경우 이름 | `string` | `null` | no |
 | <a name="input_ebs_block_device"></a> [ebs\_block\_device](#input\_ebs\_block\_device) | (선택) 인스턴스 추가 EBS 블록. | `any` | `{}` | no |
 | <a name="input_ebs_tags"></a> [ebs\_tags](#input\_ebs\_tags) | (선택) EBS 태그 내용 | `map(string)` | `{}` | no |
 | <a name="input_eip_enabled"></a> [eip\_enabled](#input\_eip\_enabled) | (선택) Instance 에 Elastic IP 할당 여부 | `bool` | `false` | no |
 | <a name="input_eip_tags"></a> [eip\_tags](#input\_eip\_tags) | (선택) ElasticIP 태그 내용 | `map(string)` | `{}` | no |
-| <a name="input_instance_profile"></a> [instance\_profile](#input\_instance\_profile) | (선택) 인스턴스 프로파일 설정 `instance_profile` 블록 내용.<br>    (선택) `enabled` - 인스턴스 프로파일 IAM role 생성 여부 default: `false`.<br>    (선택) `name` - IAM role 이름.<br>    (선택) `path` - IAM role Path.<br>    (선택) `description` - IAM Role 설명.<br>    (선택) `assumable_roles` - 역할이 맡을 수 있는 IAM 역할 ARN 목록.<br>    (선택) `policies` - IAM 역할에 연결할 IAM 정책 ARN 목록.<br>    (선택) `inline_policies` - IAM 역할에 연결할 인라인 IAM 정책 맵. (`name` => `policy`). | `any` | `null` | no |
+| <a name="input_instance_profile"></a> [instance\_profile](#input\_instance\_profile) | (선택) 인스턴스 IAM Profile 설정 값. | `string` | `null` | no |
 | <a name="input_instance_tags"></a> [instance\_tags](#input\_instance\_tags) | (선택) 인스턴스 태그 내용 | `map(string)` | `{}` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | (선택) 인스턴스 타입 default: `t3.micro` | `string` | `"t3.micro"` | no |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | (선택) 인스턴스 로 Access 할수 있는 SSH Key 이름 default: `null` | `string` | `null` | no |
