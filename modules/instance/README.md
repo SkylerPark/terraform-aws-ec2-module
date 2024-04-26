@@ -73,6 +73,9 @@ No modules.
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | (선택) 인스턴스 Subnet ID. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (선택) 리소스 태그 내용 | `map(string)` | `{}` | no |
 | <a name="input_termination_protection_enabled"></a> [termination\_protection\_enabled](#input\_termination\_protection\_enabled) | (선택) 종료 보호 활성화. | `bool` | `false` | no |
+| <a name="input_user_data"></a> [user\_data](#input\_user\_data) | (선택) 인스턴스 시작시 제공될 사용자 데이터 | `string` | `null` | no |
+| <a name="input_user_data_base64"></a> [user\_data\_base64](#input\_user\_data\_base64) | (선택) 인스턴스 시작시 base64-encode 된 제공될 사용자 데이터 | `string` | `null` | no |
+| <a name="input_user_data_replace_on_change"></a> [user\_data\_replace\_on\_change](#input\_user\_data\_replace\_on\_change) | (선택) `true` 로 되어있을시 `user_data` or `user_data_base64` 같이 사용하면 destroy 후 재성성. Default: `false` | `bool` | `false` | no |
 | <a name="input_volume_tag_enabled"></a> [volume\_tag\_enabled](#input\_volume\_tag\_enabled) | (선택) 인스턴스 볼륨 태그 활성화 여부. | `bool` | `true` | no |
 | <a name="input_volume_tags"></a> [volume\_tags](#input\_volume\_tags) | (선택) 인스턴스 DISK 태그 내용 | `map(string)` | `{}` | no |
 

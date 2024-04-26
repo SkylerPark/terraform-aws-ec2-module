@@ -128,6 +128,24 @@ variable "secondary_private_ips" {
   default     = null
 }
 
+variable "user_data" {
+  description = "(선택) 인스턴스 시작시 제공될 사용자 데이터"
+  type        = string
+  default     = null
+}
+
+variable "user_data_base64" {
+  description = "(선택) 인스턴스 시작시 base64-encode 된 제공될 사용자 데이터"
+  type        = string
+  default     = null
+}
+
+variable "user_data_replace_on_change" {
+  description = "(선택) `true` 로 되어있을시 `user_data` or `user_data_base64` 같이 사용하면 destroy 후 재성성. Default: `false`"
+  type        = bool
+  default     = false
+}
+
 variable "metadata_options" {
   description = <<EOF
   (선택) 인스턴스 메타데이터 옵션. `metadata_options` 블록 내용.

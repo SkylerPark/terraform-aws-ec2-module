@@ -42,6 +42,11 @@ resource "aws_instance" "this" {
   private_ip                  = var.private_ip
   secondary_private_ips       = var.secondary_private_ips
 
+  ## User Data
+  user_data                   = var.user_data
+  user_data_base64            = var.user_data_base64
+  user_data_replace_on_change = var.user_data_replace_on_change
+
   ## Metadata
   dynamic "metadata_options" {
     for_each = var.metadata_options != null ? [var.metadata_options] : []
@@ -108,6 +113,11 @@ resource "aws_spot_instance_request" "this" {
   associate_public_ip_address = var.auto_assign_public_ip_enabled
   private_ip                  = var.private_ip
   secondary_private_ips       = var.secondary_private_ips
+
+  ## User Data
+  user_data                   = var.user_data
+  user_data_base64            = var.user_data_base64
+  user_data_replace_on_change = var.user_data_replace_on_change
 
   ## Metadata
   dynamic "metadata_options" {
