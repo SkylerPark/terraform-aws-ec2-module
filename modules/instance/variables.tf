@@ -182,22 +182,10 @@ variable "tags" {
   default     = {}
 }
 
-variable "instance_tags" {
-  description = "(선택) 인스턴스 태그 내용"
-  type        = map(string)
-  default     = {}
-}
-
 variable "volume_tag_enabled" {
   description = "(선택) 인스턴스 볼륨 태그 활성화 여부."
   type        = bool
   default     = true
-}
-
-variable "volume_tags" {
-  description = "(선택) 인스턴스 DISK 태그 내용"
-  type        = map(string)
-  default     = {}
 }
 
 ###################################################
@@ -206,12 +194,6 @@ variable "volume_tags" {
 variable "ebs_block_device" {
   description = "(선택) 인스턴스 추가 EBS 블록."
   type        = any
-  default     = {}
-}
-
-variable "ebs_tags" {
-  description = "(선택) EBS 태그 내용"
-  type        = map(string)
   default     = {}
 }
 
@@ -238,12 +220,6 @@ variable "ami_snapshots_without_reboot_enabled" {
   nullable    = false
 }
 
-variable "ami_tags" {
-  description = "(선택) AMI 태그 내용"
-  type        = map(string)
-  default     = {}
-}
-
 ###################################################
 # ElasticIP
 ###################################################
@@ -253,8 +229,23 @@ variable "eip_enabled" {
   default     = false
 }
 
-variable "eip_tags" {
-  description = "(선택) ElasticIP 태그 내용"
-  type        = map(string)
-  default     = {}
+###################################################
+# Default Tags
+###################################################
+variable "default_tag" {
+  description = <<EOF
+  (선택) default tag 설정 정보 `default_tag` 블록 내용.
+    (선택) `enabled` - default tag 활성화 여부.
+    (선택) `security_level` - tag 에 적용될 Security Level 코드. 적용시 `security_level` key 로 설정.
+    (선택) `team_code` - tag 에 적용될 Team Code. 적용시 `team_code` key 로 설정.
+    (선택) `environment` - tag 에 적용될 환경 Code. 적용시 `environment` key 로 설정.
+  EOF
+  type = object({
+    enabled        = optional(bool, true)
+    security_level = optional(string)
+    team_code      = optional(string)
+    environment    = optional(string)
+  })
+  default  = {}
+  nullable = false
 }

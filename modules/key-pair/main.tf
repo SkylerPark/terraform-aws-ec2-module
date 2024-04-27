@@ -3,7 +3,10 @@ resource "aws_key_pair" "this" {
   public_key = var.create_private_key ? trimspace(tls_private_key.this[0].public_key_openssh) : var.public_key
 
   tags = merge(
-    { Name = var.name }, var.tags
+    {
+      "Name" = var.name
+    },
+    var.tags,
   )
 }
 

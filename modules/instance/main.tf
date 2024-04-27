@@ -76,8 +76,18 @@ resource "aws_instance" "this" {
     }
   }
 
-  tags        = merge({ "Name" = var.name }, var.tags, var.instance_tags)
-  volume_tags = var.volume_tag_enabled ? merge({ "Name" = var.name }, var.volume_tags) : null
+  tags = merge(
+    {
+      "Name" = var.name
+    },
+    var.tags,
+  )
+  volume_tags = var.volume_tag_enabled ? merge(
+    {
+      "Name" = var.name
+    },
+    var.tags,
+  ) : null
 }
 
 ###################################################
@@ -148,8 +158,18 @@ resource "aws_spot_instance_request" "this" {
     }
   }
 
-  tags        = merge({ "Name" = var.name }, var.tags, var.instance_tags)
-  volume_tags = var.volume_tag_enabled ? merge({ "Name" = var.name }, var.volume_tags) : null
+  tags = merge(
+    {
+      "Name" = var.name
+    },
+    var.tags,
+  )
+  volume_tags = var.volume_tag_enabled ? merge(
+    {
+      "Name" = var.name
+    },
+    var.tags,
+  ) : null
 }
 
 ###################################################
@@ -167,7 +187,12 @@ resource "aws_ebs_volume" "this" {
   throughput        = try(each.value.throughput, null)
   kms_key_id        = try(each.value.kms_key_id, null)
 
-  tags = merge({ Name = "${var.name}-${each.key}" }, var.tags, var.ebs_tags)
+  tags = merge(
+    {
+      "Name" = "${var.name}-${each.key}"
+    },
+    var.tags,
+  )
 
   depends_on = [
     aws_instance.this
@@ -207,7 +232,6 @@ resource "aws_ami_from_instance" "this" {
     {
       "Name" = each.key
     },
-    var.ami_tags,
     var.tags,
   )
 }
@@ -219,6 +243,9 @@ resource "aws_eip" "this" {
   count    = var.eip_enabled ? 1 : 0
   instance = !var.spot_enabled ? aws_instance.this[0].id : aws_spot_instance_request.this[0].id
   tags = merge(
-    { "Name" = var.name }, var.tags, var.eip_tags
+    {
+      "Name" = var.name
+    },
+    var.tags,
   )
 }

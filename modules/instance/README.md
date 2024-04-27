@@ -45,17 +45,14 @@ No modules.
 | <a name="input_ami_snapshots"></a> [ami\_snapshots](#input\_ami\_snapshots) | (선택) 이미지 AMI 스냅샷 이름 이름은 지역에 고유 이름으로 설정 | `set(string)` | `[]` | no |
 | <a name="input_ami_snapshots_without_reboot_enabled"></a> [ami\_snapshots\_without\_reboot\_enabled](#input\_ami\_snapshots\_without\_reboot\_enabled) | (선택) 이미지 스냅샷 사용시 인스턴스 리부팅 여부 | `bool` | `false` | no |
 | <a name="input_ami_ssm_parameter"></a> [ami\_ssm\_parameter](#input\_ami\_ssm\_parameter) | (선택) AMI ID 에 SSM 파라미터 이름 변수참조 (https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-public-parameters-ami.html) | `string` | `"/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64"` | no |
-| <a name="input_ami_tags"></a> [ami\_tags](#input\_ami\_tags) | (선택) AMI 태그 내용 | `map(string)` | `{}` | no |
 | <a name="input_auto_assign_public_ip_enabled"></a> [auto\_assign\_public\_ip\_enabled](#input\_auto\_assign\_public\_ip\_enabled) | (선택) 자동으로 퍼블릭 IP를 확성화. | `bool` | `null` | no |
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | (선택) 인스턴스를 시작할 AZ. | `string` | `null` | no |
 | <a name="input_cpu_credits"></a> [cpu\_credits](#input\_cpu\_credits) | (선택) CPU credit 옵션, 인스턴스 타입이 T2, T3, T3a 일때 사용 `standard`, `unlimited` T2일경우 기본적으로 `standard` 사용, T3일경우 기본적으로 `unlimited` 를 사용. | `string` | `null` | no |
 | <a name="input_cpu_options"></a> [cpu\_options](#input\_cpu\_options) | (선택) 특정 워크로드 및 비즈니스 요구에 맞게 최적화하기 위한 CPU 옵션 구성 설정. `cpu_options` 블록내용.<br>    (Optional) `core_count` - 인스턴스 코어수.<br>    (Optional) `threads_per_core` - 인스턴스 코어당 CPU 스레드 수. | <pre>object({<br>    core_count       = number<br>    threads_per_core = number<br>  })</pre> | `null` | no |
+| <a name="input_default_tag"></a> [default\_tag](#input\_default\_tag) | (선택) default tag 설정 정보 `default_tag` 블록 내용.<br>    (선택) `enabled` - default tag 활성화 여부.<br>    (선택) `security_level` - tag 에 적용될 Security Level 코드. 적용시 `security_level` key 로 설정.<br>    (선택) `team_code` - tag 에 적용될 Team Code. 적용시 `team_code` key 로 설정.<br>    (선택) `environment` - tag 에 적용될 환경 Code. 적용시 `environment` key 로 설정. | <pre>object({<br>    enabled        = optional(bool, true)<br>    security_level = optional(string)<br>    team_code      = optional(string)<br>    environment    = optional(string)<br>  })</pre> | `{}` | no |
 | <a name="input_ebs_block_device"></a> [ebs\_block\_device](#input\_ebs\_block\_device) | (선택) 인스턴스 추가 EBS 블록. | `any` | `{}` | no |
-| <a name="input_ebs_tags"></a> [ebs\_tags](#input\_ebs\_tags) | (선택) EBS 태그 내용 | `map(string)` | `{}` | no |
 | <a name="input_eip_enabled"></a> [eip\_enabled](#input\_eip\_enabled) | (선택) Instance 에 Elastic IP 할당 여부 | `bool` | `false` | no |
-| <a name="input_eip_tags"></a> [eip\_tags](#input\_eip\_tags) | (선택) ElasticIP 태그 내용 | `map(string)` | `{}` | no |
 | <a name="input_instance_profile"></a> [instance\_profile](#input\_instance\_profile) | (선택) 인스턴스 IAM Profile 설정 값. | `string` | `null` | no |
-| <a name="input_instance_tags"></a> [instance\_tags](#input\_instance\_tags) | (선택) 인스턴스 태그 내용 | `map(string)` | `{}` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | (선택) 인스턴스 타입 default: `t3.micro` | `string` | `"t3.micro"` | no |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | (선택) 인스턴스 로 Access 할수 있는 SSH Key 이름 default: `null` | `string` | `null` | no |
 | <a name="input_metadata_options"></a> [metadata\_options](#input\_metadata\_options) | (선택) 인스턴스 메타데이터 옵션. `metadata_options` 블록 내용.<br>    (선택) `http_endpoint_enabled` - 메타 데이터를 사용할수 있는지 여부 default: `true`.<br>    (선택) `http_tokens_enabled` - 메타 데이터 서비스에 세션 토큰이 필요한지 여부 default: `true`.<br>    (선택) `http_put_response_hop_limit` - 인스턴스 메타데이터 요청 HTTP PUT 응답 홉 제한. 가능한 값 `1` to `64`. default: `1`.<br>    (선택) `instance_tags_enabled` - 인스턴스 메타데이터 Tag 엑세스 활성화 default: `true`. | `any` | `null` | no |
@@ -77,7 +74,6 @@ No modules.
 | <a name="input_user_data_base64"></a> [user\_data\_base64](#input\_user\_data\_base64) | (선택) 인스턴스 시작시 base64-encode 된 제공될 사용자 데이터 | `string` | `null` | no |
 | <a name="input_user_data_replace_on_change"></a> [user\_data\_replace\_on\_change](#input\_user\_data\_replace\_on\_change) | (선택) `true` 로 되어있을시 `user_data` or `user_data_base64` 같이 사용하면 destroy 후 재성성. Default: `false` | `bool` | `false` | no |
 | <a name="input_volume_tag_enabled"></a> [volume\_tag\_enabled](#input\_volume\_tag\_enabled) | (선택) 인스턴스 볼륨 태그 활성화 여부. | `bool` | `true` | no |
-| <a name="input_volume_tags"></a> [volume\_tags](#input\_volume\_tags) | (선택) 인스턴스 DISK 태그 내용 | `map(string)` | `{}` | no |
 
 ## Outputs
 
