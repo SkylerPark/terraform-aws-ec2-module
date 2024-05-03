@@ -28,7 +28,7 @@ output "availability_zone" {
 
 output "public_ip" {
   description = "인스턴스 Public IP"
-  value       = var.eip_enabled ? aws_eip.this[0].id : local.instance.public_ip
+  value       = var.eip_enabled ? aws_eip.this[0].public_ip : local.instance.public_ip
 }
 
 output "disk" {
